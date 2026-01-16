@@ -48,7 +48,14 @@ const calendarDays = [
   { day: 'Sun', date: 15, highlight: true },
 ]
 
-const socketUrl = 'http://localhost:5174'
+const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5174'
+
+const createMessageId = () => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID()
+  }
+  return `msg-${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -94,7 +101,7 @@ export default function ChatPage() {
   const handleSend = () => {
     if (!input.trim()) return
     const payload: Message = {
-      id: crypto.randomUUID(),
+      id: createMessageId(),
       author: senderRole,
       text: input.trim(),
       timestamp: Date.now(),
