@@ -14,6 +14,40 @@ const starters = [
   'What advice would unblock you right now?',
 ]
 
+const upcomingEvents = [
+  {
+    id: 'event-1',
+    title: 'Coffee chat with Ari Patel',
+    date: 'Sep 12',
+    time: '4:00 PM',
+    location: 'Civic Coffee, Market St',
+  },
+  {
+    id: 'event-2',
+    title: 'Resume lab meetup',
+    date: 'Sep 15',
+    time: '6:30 PM',
+    location: 'Downtown Library',
+  },
+  {
+    id: 'event-3',
+    title: 'Mentor Match mixer',
+    date: 'Sep 19',
+    time: '5:00 PM',
+    location: 'Union Square',
+  },
+]
+
+const calendarDays = [
+  { day: 'Mon', date: 9 },
+  { day: 'Tue', date: 10 },
+  { day: 'Wed', date: 11 },
+  { day: 'Thu', date: 12, highlight: true },
+  { day: 'Fri', date: 13 },
+  { day: 'Sat', date: 14 },
+  { day: 'Sun', date: 15, highlight: true },
+]
+
 const socketUrl = 'http://localhost:5174'
 
 export default function ChatPage() {
@@ -94,7 +128,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-8 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-3xl border border-white/70 bg-[var(--fog)] p-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
@@ -113,7 +147,7 @@ export default function ChatPage() {
                 </select>
               </div>
             </div>
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 max-h-[360px] space-y-3 overflow-y-auto pr-2">
               {conversation.map((message) => (
                 <div
                   key={message.id}
@@ -154,11 +188,44 @@ export default function ChatPage() {
 
           <div className="space-y-4">
             <div className="rounded-3xl border border-white/70 bg-white/90 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Calendar</p>
+              <div className="mt-4 rounded-3xl border border-white/70 bg-[var(--fog)] p-4">
+                <div className="flex items-center justify-between text-sm text-[var(--slate)]">
+                  <span className="font-semibold text-[var(--ink)]">September 2025</span>
+                  <span>GMT-5</span>
+                </div>
+                <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs">
+                  {calendarDays.map((entry) => (
+                    <div
+                      key={entry.day}
+                      className={`rounded-2xl px-2 py-3 ${entry.highlight ? 'bg-[var(--mint)]/70 text-[var(--ink)]' : 'bg-white text-[var(--slate)]'}`}
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--slate)]">{entry.day}</p>
+                      <p className="mt-2 text-sm font-semibold">{entry.date}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-3xl border border-white/70 bg-white/90 p-6">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Conversation starters</p>
               <div className="mt-4 space-y-3 text-sm text-[var(--slate)]">
                 {starters.map((starter) => (
                   <div key={starter} className="rounded-2xl bg-[var(--fog)] px-4 py-3">
                     {starter}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-3xl border border-white/70 bg-white/90 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Upcoming events</p>
+              <div className="mt-4 space-y-3">
+                {upcomingEvents.map((eventItem) => (
+                  <div key={eventItem.id} className="rounded-2xl bg-[var(--fog)] px-4 py-3 text-sm">
+                    <p className="font-semibold text-[var(--ink)]">{eventItem.title}</p>
+                    <p className="mt-1 text-xs text-[var(--slate)]">
+                      {eventItem.date} · {eventItem.time} · {eventItem.location}
+                    </p>
                   </div>
                 ))}
               </div>
