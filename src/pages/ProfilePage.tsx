@@ -38,21 +38,14 @@ const initialProfile = {
   location: 'Austin',
 }
 
-function formatIcsDate(date: Date) {
-  const pad = (value: number) => String(value).padStart(2, '0')
-  return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(
-    date.getUTCHours(),
-  )}${pad(date.getUTCMinutes())}00Z`
-}
+
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(initialProfile)
   const [draft, setDraft] = useState(initialProfile)
   const [selectedId, setSelectedId] = useState(suggestions[0].id)
   const [matchMessage, setMatchMessage] = useState('')
-  const [meetingDate, setMeetingDate] = useState('')
-  const [meetingTime, setMeetingTime] = useState('')
-  const [scheduleError, setScheduleError] = useState('')
+  
 
   const selectedProfile = useMemo(
     () => suggestions.find((profileItem) => profileItem.id === selectedId) || suggestions[0],
@@ -76,40 +69,7 @@ export default function ProfilePage() {
     const focus = selectedProfile.skills.slice(0, 2).join(' and ')
     setMatchMessage(`You have been matched with ${selectedProfile.name} based on ${focus}.`)
   }
-
-  const handleIcsDownload = () => {
-    if (!meetingDate || !meetingTime) {
-      setScheduleError('Pick a date and time before downloading the invite.')
-      return
-    }
-
-    setScheduleError('')
-    const start = new Date(`${meetingDate}T${meetingTime}`)
-    const end = new Date(start.getTime() + 60 * 60 * 1000)
-    const ics = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//MentorMatch//EN',
-      'BEGIN:VEVENT',
-      `UID:${crypto.randomUUID()}`,
-      `DTSTAMP:${formatIcsDate(new Date())}`,
-      `DTSTART:${formatIcsDate(start)}`,
-      `DTEND:${formatIcsDate(end)}`,
-      'SUMMARY:Mentorship Meeting',
-      'DESCRIPTION:Career development session',
-      'LOCATION:Coffee Shop',
-      'STATUS:CONFIRMED',
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\n')
-
-    const blob = new Blob([ics], { type: 'text/calendar' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = 'mentorship-meeting.ics'
-    link.click()
-    URL.revokeObjectURL(link.href)
-  }
+  
 
   return (
     <div className="mx-auto max-w-6xl px-6 pb-20 pt-12">
@@ -320,40 +280,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-lg">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Scheduling</p>
-            <h2 className="font-display mt-3 text-2xl font-semibold">Generate a meeting invite</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Date</label>
-                <input
-                  className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
-                  type="date"
-                  value={meetingDate}
-                  onChange={(event) => setMeetingDate(event.target.value)}
-                />
-              </div>
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Time</label>
-                <input
-                  className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
-                  type="time"
-                  value={meetingTime}
-                  onChange={(event) => setMeetingTime(event.target.value)}
-                />
-              </div>
-            </div>
-            {scheduleError ? (
-              <p className="mt-3 text-xs text-[var(--berry)]">{scheduleError}</p>
-            ) : null}
-            <button
-              className="mt-5 w-full rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white"
-              onClick={handleIcsDownload}
-              type="button"
-            >
-              Download .ics
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>
