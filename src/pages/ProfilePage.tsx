@@ -29,6 +29,9 @@ const suggestions = [
 
 const initialProfile = {
   name: 'Camille Ray',
+  pronouns: 'She/Her',
+  pronounPreferenceForMentees: 'Ask me',
+  linkedin: 'linkedin.com/in/camilleray',
   role: 'Mentor',
   bio: 'Product manager helping new grads build confidence, roadmaps, and stakeholder fluency.',
   skills: 'Roadmapping, Hiring prep, Stakeholder management',
@@ -123,6 +126,49 @@ export default function ProfilePage() {
           </div>
 
           <div className="mt-6 space-y-4">
+            <div className="flex justify-center">
+              <img
+                src="https://randomuser.me/api/portraits/women/44.jpg"
+                alt="Profile"
+                className="h-20 w-20 rounded-full object-cover"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Name</label>
+              <input
+                className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
+                value={draft.name}
+                onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Pronouns</label>
+              <select
+                className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
+                value={draft.pronouns}
+                onChange={(event) => setDraft({ ...draft, pronouns: event.target.value })}
+              >
+                <option value="She/Her">She/Her</option>
+                <option value="He/Him">He/Him</option>
+                <option value="They/Them">They/Them</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Pronoun preference for matches</label>
+              <select
+                className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
+                value={draft.pronounPreferenceForMentees}
+                onChange={(event) => setDraft({ ...draft, pronounPreferenceForMentees: event.target.value })}
+              >
+                <option value="Use my pronouns">Use my pronouns</option>
+                <option value="Ask me">Ask me</option>
+                <option value="No preference">No preference</option>
+              </select>
+            </div>
+
             <div>
               <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Role</label>
               <select
@@ -134,6 +180,7 @@ export default function ProfilePage() {
                 <option value="Mentee">Mentee</option>
               </select>
             </div>
+
             <div>
               <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Bio</label>
               <textarea
@@ -158,6 +205,14 @@ export default function ProfilePage() {
                 onChange={(event) => setDraft({ ...draft, location: event.target.value })}
               />
             </div>
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">LinkedIn</label>
+              <input
+                className="mt-2 w-full rounded-2xl border border-[var(--ink)]/10 bg-white px-4 py-3 text-sm"
+                value={draft.linkedin}
+                onChange={(event) => setDraft({ ...draft, linkedin: event.target.value })}
+              />
+            </div>
             <button
               className="w-full rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-semibold text-white shadow-lg"
               onClick={handleSave}
@@ -176,10 +231,23 @@ export default function ProfilePage() {
                 <span className="rounded-full bg-[var(--sun)]/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--ink)]">
                   {profile.role}
                 </span>
-                <span className="text-xs font-semibold text-[var(--slate)]">Lvl 9</span>
               </div>
-              <h2 className="font-display mt-4 text-2xl font-semibold">{profile.name}</h2>
-              <p className="text-xs text-[var(--slate)]">{profile.location}</p>
+
+              <div className="mt-4 flex items-start justify-between">
+                <div className="pr-4">
+                  <h2 className="font-display text-2xl font-semibold">{profile.name}</h2>
+                  <p className="text-xs text-[var(--slate)]">{profile.pronouns}</p>
+                  <p className="text-xs text-[var(--slate)]">{profile.location}</p>
+                  <p className="mt-2 text-xs text-[var(--slate)]">Preference for matches: {profile.pronounPreferenceForMentees}</p>
+                </div>
+                <div className="flex-shrink-0">
+                  <img
+                    src="https://randomuser.me/api/portraits/women/44.jpg"
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full object-cover"
+                  />
+                </div>
+              </div>
               <p className="mt-4 text-sm text-[var(--slate)]">{profile.bio}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {skillChips.map((skill) => (
@@ -188,6 +256,18 @@ export default function ProfilePage() {
                   </span>
                 ))}
               </div>
+              {profile.linkedin ? (
+                <p className="mt-4 text-sm">
+                  <a
+                    className="text-[var(--ink)] font-semibold underline"
+                    href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {profile.linkedin}
+                  </a>
+                </p>
+              ) : null}
             </div>
           </div>
 
