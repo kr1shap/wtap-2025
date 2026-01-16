@@ -1,33 +1,34 @@
-import { useEffect, useState } from 'react'
-import ChatPage from './pages/ChatPage'
-import HomePage from './pages/HomePage'
-import ProfilePage from './pages/ProfilePage'
+import { useEffect, useState } from "react";
+import ChatPage from "./pages/ChatPage";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import FindMatch from "./pages/FindMatch";
 
 type RouteState = {
-  path: string
-  section: string
-}
+  path: string;
+  section: string;
+};
 
 const parseHash = (): RouteState => {
-  const raw = window.location.hash.replace(/^#/, '')
-  const [pathPart, queryString] = raw.split('?')
-  const path = pathPart || '/'
-  const params = new URLSearchParams(queryString || '')
-  const section = params.get('section') || ''
-  return { path, section }
-}
+  const raw = window.location.hash.replace(/^#/, "");
+  const [pathPart, queryString] = raw.split("?");
+  const path = pathPart || "/";
+  const params = new URLSearchParams(queryString || "");
+  const section = params.get("section") || "";
+  return { path, section };
+};
 
 export default function App() {
-  const [route, setRoute] = useState<RouteState>(() => parseHash())
+  const [route, setRoute] = useState<RouteState>(() => parseHash());
 
   useEffect(() => {
-    const handleHashChange = () => setRoute(parseHash())
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
+    const handleHashChange = () => setRoute(parseHash());
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
-  const page = route.path
-  const showHome = page === '/' || page === ''
+  const page = route.path;
+  const showHome = page === "/" || page === "";
 
   return (
     <div className="min-h-screen bg-[var(--sand)] text-[var(--ink)]">
@@ -37,8 +38,12 @@ export default function App() {
             MM
           </span>
           <span>
-            <span className="font-display block text-lg font-semibold">Mentor Match</span>
-            <span className="text-xs uppercase tracking-[0.2em] text-[var(--slate)]">Swipe for wisdom</span>
+            <span className="font-display block text-lg font-semibold">
+              Mentor Match
+            </span>
+            <span className="text-xs uppercase tracking-[0.2em] text-[var(--slate)]">
+              Swipe for wisdom
+            </span>
           </span>
         </a>
 
@@ -46,17 +51,29 @@ export default function App() {
           <a className="transition hover:text-[var(--ink)]" href="#/">
             Home
           </a>
-          <a className="transition hover:text-[var(--ink)]" href="#/?section=features">
+          <a
+            className="transition hover:text-[var(--ink)]"
+            href="#/?section=features"
+          >
             Features
           </a>
-          <a className="transition hover:text-[var(--ink)]" href="#/?section=how-it-works">
+          <a
+            className="transition hover:text-[var(--ink)]"
+            href="#/?section=how-it-works"
+          >
             How it works
           </a>
-          <a className="transition hover:text-[var(--ink)]" href="#/?section=events">
+          <a
+            className="transition hover:text-[var(--ink)]"
+            href="#/?section=events"
+          >
             Events
           </a>
           <a className="transition hover:text-[var(--ink)]" href="#/profile">
             Profile
+          </a>
+          <a className="transition hover:text-[var(--ink)]" href="#/find-match">
+            Find a match
           </a>
           <a className="transition hover:text-[var(--ink)]" href="#/chat">
             Chat
@@ -67,7 +84,9 @@ export default function App() {
           href="#/profile"
           className="group flex items-center gap-3 rounded-full border border-white/60 bg-white/80 px-2 py-1 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md"
         >
-          <span className="hidden text-xs font-semibold text-[var(--slate)] sm:block">Your card</span>
+          <span className="hidden text-xs font-semibold text-[var(--slate)] sm:block">
+            Your card
+          </span>
           <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">
             CM
             <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-[var(--mint)]" />
@@ -77,9 +96,10 @@ export default function App() {
 
       <main>
         {showHome ? <HomePage section={route.section} /> : null}
-        {page === '/profile' ? <ProfilePage /> : null}
-        {page === '/chat' ? <ChatPage /> : null}
+        {page === "/profile" ? <ProfilePage /> : null}
+        {page === "/find-match" ? <FindMatch /> : null}
+        {page === "/chat" ? <ChatPage /> : null}
       </main>
     </div>
-  )
+  );
 }
