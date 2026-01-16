@@ -187,7 +187,7 @@ export default function ChatPage() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--slate)]">Conversation</p>
-                <p className="mt-2 text-sm text-[var(--slate)]">Mentor: Ari Patel - Mentee: Sasha Kim</p>
+                <p className="mt-2 text-sm text-[var(--slate)]">Mentor: You - Mentee: Jordan Lee</p>
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-[var(--slate)]">Send as</span>
